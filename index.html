@@ -3,71 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AQI Signage - Perfectly Aligned (Samsung S4)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>AQI Signage - Custom UI Version</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * { -webkit-box-sizing: border-box; box-sizing: border-box; font-family: 'Prompt', sans-serif; }
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            background-color: #F3F3F3; overflow: hidden; 
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #F3F3F3; overflow: hidden; }
         
-        /* แถบสีพื้นหลัง 65% */
+        /* แถบสีพื้นหลังเริ่มจากกึ่งกลางจอลงไป */
         #bottom-bar { 
             width: 100%; height: 65%; position: absolute; 
-            bottom: 0; left: 0; background: #95a5a6; 
-            -webkit-transition: background 1s ease-in-out;
-            transition: background 1s ease-in-out;
+            top: 35%; left: 0; background: #95a5a6; 
+            -webkit-transition: background 1s; transition: background 1s;
             z-index: 1;
         }
 
-        /* Container หลักใช้ Flexbox */
         .screen-container { 
-            width: 100%; height: 100%; 
-            display: -webkit-flex; display: flex; 
-            -webkit-flex-direction: column; flex-direction: column; 
-            -webkit-justify-content: space-between; justify-content: space-between; 
-            -webkit-align-items: center; align-items: center; 
-            position: relative; z-index: 10;
+            width: 100%; height: 100%; position: relative; z-index: 10;
         }
 
-        /* หัวข้อบนสุด */
-        .header-section { height: 18%; width: 100%; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; }
-        .header-text { font-size: 8vh; font-weight: 700; color: #000000; }
+        /* 1. หัวข้อบนสุด */
+        .header-text { 
+            width: 100%; position: absolute; top: 7vh; text-align: center;
+            color: #000000; font-size: 10vh; font-weight: 700;
+        }
 
-        /* ส่วนกลาง: ขยาย Card ให้กว้างขึ้นเพื่อรองรับของใหญ่ */
-        .main-section { height: 52%; width: 100%; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; }
+        /* 2. กรอบขาวหลัก (Card) */
         .main-card { 
-            width: 96%; height: 100%; background: #ffffff; 
-            -webkit-box-shadow: 0 30px 100px rgba(0,0,0,0.25); box-shadow: 0 30px 100px rgba(0,0,0,0.25); 
-            border-radius: 80px; display: -webkit-flex; display: flex; 
-            -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center;
-        }
-
-        /* ปรับขนาด Icon ให้เท่ากับตัวเลข (36vh) */
-        #status-icon { 
-            width: 36vh; 
-            height: 36vh;
-            margin-right: 6%;
+            width: 85%; height: 40vh; 
+            left: 7.5%; top: 28vh; position: absolute; 
+            background: white; border-radius: 47px; z-index: 20;
+            -webkit-box-shadow: 0px 4px 100px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 4px 100px rgba(0, 0, 0, 0.25);
             display: -webkit-flex; display: flex;
             -webkit-align-items: center; align-items: center;
-            -webkit-justify-content: center; justify-content: center;
+            -webkit-justify-content: space-around; justify-content: space-around;
+            padding: 0 5%;
         }
-        #status-icon svg { width: 100%; height: 100%; }
 
-        /* กลุ่มตัวเลขและหน่วย */
-        .aqi-info { display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; -webkit-align-items: center; align-items: center; }
-        #aqi-value { 
-            font-size: 36vh; /* ขนาดเท่ากับ Icon */
-            font-weight: 700; line-height: 0.8; color: #95a5a6; 
-            margin: 0; letter-spacing: -10px; 
+        /* ฝั่งซ้าย: AQI */
+        .aqi-group { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; }
+        #status-icon { width: 22vh; height: 22vh; margin-right: 3vh; -webkit-animation: floating 1.5s ease-in-out infinite; }
+        .aqi-val-box { text-align: center; }
+        #aqi-value { font-size: 18vh; font-weight: 700; color: #95a5a6; line-height: 1; }
+        .aqi-label { font-size: 3.5vh; font-weight: 700; color: #95a5a6; margin-top: -1vh; }
+
+        /* เส้นคั่นกลาง */
+        .divider { width: 4px; height: 28vh; background: #95a5a6; opacity: 0.5; }
+
+        /* ฝั่งขวา: Weather & Temp */
+        .temp-group { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; }
+        #weather-icon-box { width: 14vh; height: 14vh; margin-right: 3vh; }
+        #temp-value { font-size: 18vh; font-weight: 700; color: #95a5a6; }
+
+        /* 3. สถานะอากาศ (สีขาวบนแถบสี) */
+        #status-text-large { 
+            width: 100%; position: absolute; top: 70vh; text-align: center;
+            color: white; font-size: 11vh; font-weight: 700;
         }
-        .aqi-unit { font-size: 5vh; font-weight: 700; color: #95a5a6; margin-top: 2vh; opacity: 0.7; }
 
-        /* ส่วนข้อความล่าง */
-        .footer-section { height: 30%; width: 100%; display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; -webkit-align-items: center; align-items: center; -webkit-justify-content: flex-start; justify-content: flex-start; padding-top: 5vh; }
-        #status-text { color: #ffffff; font-size: 11vh; font-weight: 700; text-shadow: 0 6px 20px rgba(0,0,0,0.4); margin-bottom: 3vh; }
-        .meta-info { color: rgba(255,255,255,0.9); font-size: 3.5vh; font-weight: 500; }
+        /* 4. Footer ท้ายจอ */
+        .footer-info { 
+            width: 100%; position: absolute; bottom: 5vh; text-align: center;
+            color: white; font-size: 3.5vh; font-weight: 400;
+        }
+
+        @-webkit-keyframes floating {
+            0% { -webkit-transform: translateY(0px); }
+            50% { -webkit-transform: translateY(-20px); }
+            100% { -webkit-transform: translateY(0px); }
+        }
     </style>
 </head>
 <body>
@@ -75,41 +79,45 @@
     <div id="bottom-bar"></div>
 
     <div class="screen-container">
-        <div class="header-section">
-            <div class="header-text">ดัชนีคุณภาพอากาศวันนี้</div>
-        </div>
+        <div class="header-text">คุณภาพอากาศวันนี้</div>
         
-        <div class="main-section">
-            <div class="main-card">
+        <div class="main-card">
+            <div class="aqi-group">
                 <div id="status-icon"></div>
-                <div class="aqi-info">
+                <div class="aqi-val-box">
                     <div id="aqi-value">--</div>
-                    <div id="aqi-unit-text" class="aqi-unit">US-AQI</div>
+                    <div class="aqi-label">US-AQI</div>
                 </div>
+            </div>
+
+            <div id="mid-line" class="divider"></div>
+
+            <div class="temp-group">
+                <div id="weather-icon-box" class="weather-icon-box"></div>
+                <div id="temp-value">--°C</div>
             </div>
         </div>
 
-        <div class="footer-section">
-            <div id="status-text">กำลังอัปเดต...</div>
-            <div class="meta-info">
-                <span>Chiang Mai University</span> | <span id="current-time">00:00:00</span>
-            </div>
+        <div id="status-text-large">กำลังเชื่อมต่อ...</div>
+        
+        <div class="footer-info">
+            <span id="station-name">Chiang Mai University Area</span> | <span id="current-time">00:00:00</span>
         </div>
     </div>
 
     <script>
         var TOKEN = '7b1855999d1e30206e4beffd05616884b1f3e716';
-        var STATIONS = ['@99490', '@365722', 'chiangmai'];
+        var STATIONS = ['chiangmai', '@99489', '@99490', '@99491', '@403297'];
 
-        // SVG วาดใหม่ให้สวยและสมดุลที่ขนาดใหญ่
-        function getSvgIcon(color, type) {
-            var mouthPath = (type === 'happy') ? "M30 70 Q50 85 70 70" : "M30 80 Q50 65 70 80";
-            return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
-                   '<circle cx="50" cy="50" r="48" fill="' + color + '" />' +
-                   '<circle cx="32" cy="40" r="6" fill="white" />' +
-                   '<circle cx="68" cy="40" r="6" fill="white" />' +
-                   '<path d="' + mouthPath + '" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" />' +
-                   '</svg>';
+        function getWeatherIcon(h) {
+            if (h < 50) return '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="25" fill="#FFDD00"/><g stroke="#FFDD00" stroke-width="6"><line x1="50" y1="10" x2="50" y2="20"/><line x1="50" y1="80" x2="50" y2="90"/><line x1="10" y1="50" x2="20" y2="50"/><line x1="80" y1="50" x2="90" y2="50"/><line x1="21" y1="21" x2="28" y2="28"/><line x1="72" y1="72" x2="79" y2="79"/></g></svg>';
+            if (h < 80) return '<svg viewBox="0 0 100 100"><path d="M25 70 Q25 50 45 50 Q50 35 70 40 Q85 45 80 65 L30 80" fill="white" opacity="0.8"/></svg>';
+            return '<svg viewBox="0 0 100 100"><path d="M25 60 Q25 40 45 40 Q50 25 70 30 Q85 35 80 55 L30 70" fill="white"/><line x1="40" y1="75" x2="35" y2="85" stroke="#4FC3F7" stroke-width="4"/></svg>';
+        }
+
+        function getAqiIcon(color, type) {
+            var mouth = (type === 'happy') ? "M30 70 Q50 85 70 70" : "M30 80 Q50 65 70 80";
+            return '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="' + color + '" /><circle cx="33" cy="40" r="6" fill="white" /><circle cx="67" cy="40" r="6" fill="white" /><path d="' + mouth + '" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" /></svg>';
         }
 
         function updateClock() {
@@ -118,47 +126,58 @@
         }
 
         function fetchAirData() {
-            var requestData = function(index) {
-                if (index >= STATIONS.length) return;
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', 'https://api.waqi.info/feed/' + STATIONS[index] + '/?token=' + TOKEN + '&_ts=' + new Date().getTime(), true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        try {
-                            var result = JSON.parse(xhr.responseText);
-                            if (result.status === 'ok' && result.data && result.data.aqi > 0) {
-                                updateUI(result.data.aqi);
-                            } else { requestData(index + 1); }
-                        } catch (e) { requestData(index + 1); }
-                    }
-                };
-                xhr.send();
-            };
-            requestData(0);
+            var sumAqi = 0, sumT = 0, sumH = 0, countA = 0, countT = 0, countH = 0, fin = 0;
+            for (var i = 0; i < STATIONS.length; i++) {
+                (function(id) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', 'https://api.waqi.info/feed/' + id + '/?token=' + TOKEN + '&nocache=' + new Date().getTime(), true);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            fin++;
+                            if (xhr.status === 200) {
+                                try {
+                                    var r = JSON.parse(xhr.responseText);
+                                    if (r.status === 'ok' && r.data) {
+                                        if (r.data.aqi > 0) { sumAqi += r.data.aqi; countA++; }
+                                        if (r.data.iaqi.t) { sumT += r.data.iaqi.t.v; countT++; }
+                                        if (r.data.iaqi.h) { sumH += r.data.iaqi.h.v; countH++; }
+                                    }
+                                } catch(e) {}
+                            }
+                            if (fin === STATIONS.length) {
+                                renderUI(countA > 0 ? Math.round(sumAqi/countA) : 0, countT > 0 ? Math.round(sumT/countT) : 0, countH > 0 ? Math.round(sumH/countH) : 50);
+                            }
+                        }
+                    };
+                    xhr.send();
+                })(STATIONS[i]);
+            }
         }
 
-        function updateUI(aqi) {
-            var val = Math.round(aqi);
+        function renderUI(aqi, temp, hum) {
+            if (aqi === 0) return;
             var color = "#7f8c8d", text = "อันตราย!", type = 'sad';
+            if (aqi <= 50) { color = "#2ecc71"; text = "คุณภาพอากาศดี"; type = 'happy'; }
+            else if (aqi <= 100) { color = "#f1c40f"; text = "อากาศปานกลาง"; type = 'happy'; }
+            else if (aqi <= 150) { color = "#EA7D1F"; text = "เริ่มมีผลต่อสุขภาพ"; type = 'sad'; }
+            else if (aqi <= 200) { color = "#e74c3c"; text = "มีผลต่อสุขภาพ"; type = 'sad'; }
+            else if (aqi <= 300) { color = "#9b59b6"; text = "มีผลต่อสุขภาพมาก"; type = 'sad'; }
 
-            if (val <= 50) { color = "#2ecc71"; text = "คุณภาพอากาศดี"; type = 'happy'; }
-            else if (val <= 100) { color = "#f1c40f"; text = "อากาศปานกลาง"; type = 'happy'; }
-            else if (val <= 150) { color = "#EA7D1F"; text = "เริ่มมีผลต่อสุขภาพ"; type = 'sad'; }
-            else if (val <= 200) { color = "#e74c3c"; text = "มีผลต่อสุขภาพ"; type = 'sad'; }
-            else if (val <= 300) { color = "#9b59b6"; text = "มีผลต่อสุขภาพมาก"; type = 'sad'; }
-
-            document.getElementById('aqi-value').innerText = val;
+            document.getElementById('aqi-value').innerText = aqi;
             document.getElementById('aqi-value').style.color = color;
-            document.getElementById('aqi-unit-text').style.color = color;
+            document.getElementById('temp-value').innerText = temp + "°C";
+            document.getElementById('temp-value').style.color = color;
+            document.getElementById('mid-line').style.background = color;
             document.getElementById('bottom-bar').style.background = color;
-            document.getElementById('status-text').innerText = text;
-            document.getElementById('status-icon').innerHTML = getSvgIcon(color, type);
+            document.getElementById('status-text-large').innerText = text;
+            document.getElementById('status-icon').innerHTML = getAqiIcon(color, type);
+            document.getElementById('weather-icon-box').innerHTML = getWeatherIcon(hum);
         }
 
         setInterval(updateClock, 1000);
         updateClock();
         fetchAirData();
-        setInterval(fetchAirData, 600000);
+        setInterval(fetchAirData, 300000);
     </script>
 </body>
 </html>
