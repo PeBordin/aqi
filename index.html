@@ -3,81 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AQI Signage - Focus Large Data</title>
+    <title>AQI Signage - Samsung S4 Compatible</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; font-family: 'Prompt', sans-serif; }
+        /* รีเซ็ตพื้นฐาน */
+        * { -webkit-box-sizing: border-box; box-sizing: border-box; font-family: 'Prompt', sans-serif; }
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             background-color: #F3F3F3; overflow: hidden; 
         }
         
-        /* แถบสีพื้นหลัง 65% */
+        /* พื้นหลังสี (ขยับขึ้นมา 65% ของจอ) */
         #bottom-bar { 
             width: 100%; height: 65%; position: absolute; 
             bottom: 0; left: 0; background: #95a5a6; 
-            transition: background 1s ease-in-out; z-index: 1;
+            -webkit-transition: background 1s ease-in-out;
+            transition: background 1s ease-in-out;
+            z-index: 1;
         }
 
+        /* Container หลักใช้ Flexbox แบบดั้งเดิม */
         .screen-container { 
-            width: 100%; height: 100vh; display: flex; 
-            flex-direction: column; justify-content: space-between; 
-            align-items: center; position: relative; z-index: 10;
+            width: 100%; height: 100%; 
+            display: -webkit-flex; display: flex; 
+            -webkit-flex-direction: column; flex-direction: column; 
+            -webkit-justify-content: space-between; justify-content: space-between; 
+            -webkit-align-items: center; align-items: center; 
+            position: relative; z-index: 10;
         }
 
-        /* 1. Header: ขนาดเดิม (8vh) */
+        /* ส่วนหัว */
         .header-section {
-            height: 18vh; display: flex; align-items: center; justify-content: center;
+            height: 18%; width: 100%;
+            display: -webkit-flex; display: flex; 
+            -webkit-align-items: center; align-items: center; 
+            -webkit-justify-content: center; justify-content: center;
         }
         .header-text { font-size: 8vh; font-weight: 700; color: #000000; }
 
-        /* 2. Main Card: ขยายพื้นที่ภายในเพื่อรองรับตัวเลขยักษ์ */
+        /* ส่วนกลาง (Card สีขาว) */
         .main-section {
-            height: 52vh; width: 100%; display: flex; align-items: center; justify-content: center;
+            height: 52%; width: 100%; 
+            display: -webkit-flex; display: flex; 
+            -webkit-align-items: center; align-items: center; 
+            -webkit-justify-content: center; justify-content: center;
         }
         .main-card { 
-            width: 96%; max-width: 1700px; height: 100%;
-            background: #ffffff; box-shadow: 0 40px 120px rgba(0,0,0,0.25); 
-            border-radius: 80px; display: flex; 
-            align-items: center; justify-content: center; padding: 0 2%;
+            width: 95%; height: 100%;
+            background: #ffffff; 
+            -webkit-box-shadow: 0 30px 100px rgba(0,0,0,0.25);
+            box-shadow: 0 30px 100px rgba(0,0,0,0.25); 
+            border-radius: 80px; 
+            display: -webkit-flex; display: flex; 
+            -webkit-align-items: center; align-items: center; 
+            -webkit-justify-content: center; justify-content: center;
         }
 
-        /* ขยาย Icon ให้ใหญ่พิเศษ */
         .status-icon { 
-            font-size: 34vh; 
-            margin-right: 4%;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
+            font-size: 30vh; /* ขยายขนาด Icon */
+            margin-right: 5%;
         }
 
         .aqi-info { 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: -webkit-flex; display: flex; 
+            -webkit-flex-direction: column; flex-direction: column; 
+            -webkit-align-items: center; align-items: center;
         }
 
-        /* ขยายตัวเลขให้ใหญ่ที่สุด (38vh) */
         #aqi-value { 
-            font-size: 38vh; 
+            font-size: 36vh; /* ขยายตัวเลข AQI */
             font-weight: 700; line-height: 0.8; color: #95a5a6;
             margin: 0; letter-spacing: -10px;
         }
 
         .aqi-unit { 
             font-size: 5vh; font-weight: 700; color: #95a5a6;
-            margin-top: 1vh; opacity: 0.7;
+            margin-top: 2vh; opacity: 0.7;
         }
 
-        /* 3. Footer: ขนาดเดิม (11vh) */
+        /* ส่วนท้าย */
         .footer-section {
-            height: 30vh; width: 100%; display: flex; 
-            flex-direction: column; align-items: center; 
-            justify-content: flex-start; padding-top: 4vh;
+            height: 30%; width: 100%; 
+            display: -webkit-flex; display: flex; 
+            -webkit-flex-direction: column; flex-direction: column; 
+            -webkit-align-items: center; align-items: center; 
+            -webkit-justify-content: flex-start; justify-content: flex-start;
+            padding-top: 5vh;
         }
 
         #status-text { 
             color: #ffffff; font-size: 11vh; font-weight: 700; 
-            text-shadow: 0 6px 20px rgba(0,0,0,0.3); margin-bottom: 2vh;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.4); margin-bottom: 3vh;
         }
 
-        .meta-info { color: rgba(255,255,255,0.9); font-size: 3.5vh; font-weight: 500; }
+        .meta-info { 
+            color: rgba(255,255,255,0.9); font-size: 3.5vh; font-weight: 500; 
+        }
     </style>
 </head>
 <body>
@@ -100,7 +121,7 @@
         </div>
 
         <div class="footer-section">
-            <div id="status-text">อัปเดตข้อมูล...</div>
+            <div id="status-text">กำลังอัปเดต...</div>
             <div class="meta-info">
                 <span>Chiang Mai University</span> | <span id="current-time">00:00:00</span>
             </div>
@@ -108,25 +129,34 @@
     </div>
 
     <script>
+        // ใช้ "var" แทน "const/let" สำหรับ Samsung SSSP 4.0
         var TOKEN = '7b1855999d1e30206e4beffd05616884b1f3e716';
         var STATIONS = ['@99490', '@365722', 'chiangmai'];
 
         function updateClock() {
             var now = new Date();
-            document.getElementById('current-time').innerText = now.toLocaleTimeString('th-TH');
+            var timeStr = now.toLocaleTimeString('th-TH');
+            document.getElementById('current-time').innerText = timeStr;
         }
 
         function fetchAirData() {
             var requestData = function(index) {
                 if (index >= STATIONS.length) return;
+                
                 var xhr = new XMLHttpRequest();
+                // ต่อสตริงแบบเก่า (Concatenation) แทนการใช้ Backticks
                 xhr.open('GET', 'https://api.waqi.info/feed/' + STATIONS[index] + '/?token=' + TOKEN + '&_ts=' + new Date().getTime(), true);
+                
                 xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        var result = JSON.parse(xhr.responseText);
-                        if (result.status === 'ok' && result.data && result.data.aqi > 0) {
-                            updateUI(result.data.aqi);
-                        } else {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        try {
+                            var result = JSON.parse(xhr.responseText);
+                            if (result.status === 'ok' && result.data && result.data.aqi > 0) {
+                                updateUI(result.data.aqi);
+                            } else {
+                                requestData(index + 1);
+                            }
+                        } catch (e) {
                             requestData(index + 1);
                         }
                     }
@@ -154,10 +184,11 @@
             document.getElementById('status-icon').innerText = icon;
         }
 
+        // ตั้งเวลาการทำงาน
         setInterval(updateClock, 1000);
         updateClock();
         fetchAirData();
-        setInterval(fetchAirData, 600000);
+        setInterval(fetchAirData, 600000); // อัปเดตทุก 10 นาที
     </script>
 </body>
 </html>
